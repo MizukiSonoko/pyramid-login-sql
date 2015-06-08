@@ -27,57 +27,51 @@ from .security import (
     authenticate,
     )
 
-# regular expression used to find WikiWords
-wikiwords = re.compile(r"\b([A-Z]\w+[A-Z]+\w+)")
+@view_config(route_name='view_top', renderer='templates/top.mako')
+def view_top(request):
+    pages = DBSession.query(Page).all()
+    if 'newpage' in request.params:
+        return HTTPFound(location = request.route_url('add_page'))
 
-@view_config(route_name='view_wiki',
-             permission='view')
-def view_wiki(request):
-    return HTTPFound(location = request.route_url('view_page',
-                                                  pagename='FrontPage'))
+    return dict(
+        pages = pages
+    )
 
 
-
-@view_config(route_name='view_page', renderer='templates/view.pt')
+@view_config(route_name='view_page', renderer='templates/view.mako')
 def view_page(request):
     pagename = request.matchdict['pagename']
     page = DBSession.query(Page).filter_by(name=pagename).first()
     if page is None:
         return HTTPNotFound('No such page')
 
-    def check(match):
-        word = match.group(1)
-        exists = DBSession.query(Page).filter_by(name=word).all()
-        if exists:
-            view_url = request.route_url('view_page', pagename=word)
-            return '<a href="%s">%s</a>' % (view_url, word)
-        else:
-            add_url = request.route_url('add_page', pagename=word)
-            return '<a href="%s">%s</a>' % (add_url, word)
+    edit_url = '/view/' + page.name + '/edit'
 
-    content = publish_parts(page.data, writer_name='html')['html_body']
-    content = wikiwords.sub(check, content)
-    edit_url = request.route_url('edit_page', pagename=pagename)
-    return dict(page=page, content=content, edit_url=edit_url,
-                logged_in=authenticated_userid(request))
+    return dict(
+        page=page,
+        edit_url=edit_url,
+        logged_in=authenticated_userid(request))
 
-@view_config(route_name='add_page', renderer='templates/edit.pt',
+@view_config(route_name='add_page', renderer='templates/add.mako',
              permission='edit')
 def add_page(request):
-    pagename = request.matchdict['pagename']
+    
+    pagename = ''
     if 'form.submitted' in request.params:
+        pagename = request.params['pagename']
         body = request.params['body']
         author = authenticated_userid(request)
         page = Page(pagename, body, author)
         DBSession.add(page)
         return HTTPFound(location = request.route_url('view_page',
-                                                      pagename=pagename))
+            pagename=pagename))
+
     save_url = request.route_url('add_page', pagename=pagename)
-    page = Page('', '')
+    page = Page('', '', '')
     return dict(page=page, save_url=save_url,
                 logged_in=authenticated_userid(request))
 
-@view_config(route_name='edit_page', renderer='templates/edit.pt',
+@view_config(route_name='edit_page', renderer='templates/edit.mako',
              permission='edit')
 def edit_page(request):
     
@@ -95,8 +89,8 @@ def edit_page(request):
         logged_in=authenticated_userid(request),
         )
 
-@view_config(route_name='login', renderer='templates/login.pt')
-@forbidden_view_config(renderer='templates/login.pt')
+@view_config(route_name='login', renderer='templates/login.mako')
+@forbidden_view_config(renderer='templates/login.mako')
 def login(request):
     login_url = request.route_url('login')
     referrer = request.url
@@ -113,7 +107,7 @@ def login(request):
         if authenticate(login, password):
             headers = remember(request, login)
             return HTTPFound(location = came_from,
-                             headers = headers)
+                headers = headers)
         message = 'Failed login'
 
     return dict(
@@ -127,7 +121,7 @@ def login(request):
 @view_config(route_name='logout')
 def logout(request):
     headers = forget(request)
-    return HTTPFound(location = request.route_url('view_wiki'),
+    return HTTPFound(location = request.route_url('view_top'),
                      headers = headers)
 
 
