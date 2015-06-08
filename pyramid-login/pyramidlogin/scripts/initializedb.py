@@ -13,10 +13,11 @@ from pyramid.scripts.common import parse_vars
 
 from ..models import (
     DBSession,
-    MyModel,
+    User,
     Base,
     )
 
+import hashlib
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -36,5 +37,6 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        model = MyModel(name='one', value=1)
-        DBSession.add(model)
+        user = User(name='one', passwd=hashlib.md5('password').hexdigest())
+        DBSession.add(user)
+

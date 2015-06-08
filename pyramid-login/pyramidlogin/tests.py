@@ -13,13 +13,14 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         engine = create_engine('sqlite://')
         from .models import (
             Base,
-            MyModel,
+            User,
             )
+        import hashlib
         DBSession.configure(bind=engine)
         Base.metadata.create_all(engine)
         with transaction.manager:
-            model = MyModel(name='one', value=55)
-            DBSession.add(model)
+            user = User(name='user1', passwd=hashlib.md5('Password').hexdigest())
+            DBSession.add(user)
 
     def tearDown(self):
         DBSession.remove()
@@ -29,7 +30,7 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         from .views import my_view
         request = testing.DummyRequest()
         info = my_view(request)
-        self.assertEqual(info['one'].name, 'one')
+        self.assertEqual(info['user1'].name, 'user1')
         self.assertEqual(info['project'], 'pyramid-login')
 
 
@@ -40,7 +41,7 @@ class TestMyViewFailureCondition(unittest.TestCase):
         engine = create_engine('sqlite://')
         from .models import (
             Base,
-            MyModel,
+            User,
             )
         DBSession.configure(bind=engine)
 
