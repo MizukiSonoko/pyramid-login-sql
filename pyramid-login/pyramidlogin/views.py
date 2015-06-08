@@ -36,6 +36,8 @@ def view_wiki(request):
     return HTTPFound(location = request.route_url('view_page',
                                                   pagename='FrontPage'))
 
+
+
 @view_config(route_name='view_page', renderer='templates/view.pt')
 def view_page(request):
     pagename = request.matchdict['pagename']
@@ -65,7 +67,8 @@ def add_page(request):
     pagename = request.matchdict['pagename']
     if 'form.submitted' in request.params:
         body = request.params['body']
-        page = Page(pagename, body)
+        author = authenticated_userid(request)
+        page = Page(pagename, body, author)
         DBSession.add(page)
         return HTTPFound(location = request.route_url('view_page',
                                                       pagename=pagename))
@@ -77,13 +80,15 @@ def add_page(request):
 @view_config(route_name='edit_page', renderer='templates/edit.pt',
              permission='edit')
 def edit_page(request):
+    
     pagename = request.matchdict['pagename']
     page = DBSession.query(Page).filter_by(name=pagename).one()
     if 'form.submitted' in request.params:
-        page.data = request.params['body']
-        DBSession.add(page)
-        return HTTPFound(location = request.route_url('view_page',
-                                                      pagename=pagename))
+        if page.author == authenticated_userid(request):
+            page.data = request.params['body']
+            DBSession.add(page)
+            return HTTPFound(location = request.route_url('view_page',
+                pagename=pagename))
     return dict(
         page=page,
         save_url = request.route_url('edit_page', pagename=pagename),
