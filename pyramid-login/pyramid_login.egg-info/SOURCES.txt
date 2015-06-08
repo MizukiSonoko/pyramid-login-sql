@@ -13,6 +13,7 @@ pyramid_login.egg-info/requires.txt
 pyramid_login.egg-info/top_level.txt
 pyramidlogin/__init__.py
 pyramidlogin/models.py
+pyramidlogin/security.py
 pyramidlogin/tests.py
 pyramidlogin/views.py
 pyramidlogin/scripts/__init__.py

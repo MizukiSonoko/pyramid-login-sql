@@ -23,5 +23,6 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(Text)
     passwd = Column(Text)
+    group  = Column(Text)
 
 Index('user_index', User.name, unique=True, mysql_length=255)

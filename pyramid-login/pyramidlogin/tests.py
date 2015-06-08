@@ -19,7 +19,7 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         DBSession.configure(bind=engine)
         Base.metadata.create_all(engine)
         with transaction.manager:
-            user = User(name='user1', passwd=hashlib.md5('Password').hexdigest())
+            user = User(name='user', passwd=hashlib.md5('password').hexdigest(), group='editor')
             DBSession.add(user)
 
     def tearDown(self):
@@ -30,7 +30,7 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         from .views import my_view
         request = testing.DummyRequest()
         info = my_view(request)
-        self.assertEqual(info['user1'].name, 'user1')
+        self.assertEqual(info['user'].name, 'user')
         self.assertEqual(info['project'], 'pyramid-login')
 
 
