@@ -23,6 +23,13 @@ def main(global_config, **settings):
     config.set_authorization_policy(authz_policy)
     config.include('pyramid_chameleon')
     config.add_static_view('static', 'static', cache_max_age=3600)
-    config.add_route('home', '/')
+
+    config.add_route('view_wiki', '/')
+    config.add_route('login', '/login')
+    config.add_route('logout', '/logout')
+    config.add_route('view_page', '/{pagename}')
+    config.add_route('add_page', '/add_page/{pagename}')
+    config.add_route('edit_page', '/{pagename}/edit_page')
+
     config.scan()
     return config.make_wsgi_app()

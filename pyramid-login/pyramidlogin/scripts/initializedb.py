@@ -14,6 +14,7 @@ from pyramid.scripts.common import parse_vars
 from ..models import (
     DBSession,
     User,
+    Page,
     Base,
     )
 
@@ -38,5 +39,7 @@ def main(argv=sys.argv):
     Base.metadata.create_all(engine)
     with transaction.manager:
         user = User(name='one', passwd=hashlib.md5('password').hexdigest(), group='editor')
+        page = Page('FrontPage', 'This is the front page.')
         DBSession.add(user)
+        DBSession.add(page)
 

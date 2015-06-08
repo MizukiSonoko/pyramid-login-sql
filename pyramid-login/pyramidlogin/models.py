@@ -28,8 +28,19 @@ class RootFactory(object):
     def __init__(self, request):
         pass
 
+class Page(Base):
+    """ The SQLAlchemy declarative model class for a Page object. """
+    __tablename__ = 'pages'
+    id = Column(Integer, primary_key=True)
+    name = Column(Text, unique=True)
+    data = Column(Text)
+
+    def __init__(self, name, data):
+        self.name = name
+        self.data = data
 
 class User(Base):
+    """ The SQLAlchemy declarative model class for a User object. """
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     name = Column(Text)

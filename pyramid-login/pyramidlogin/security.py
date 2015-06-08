@@ -5,15 +5,34 @@ from .models import (
     DBSession,
     User,
 )
+import hashlib
 
 GROUPS = {'editor':['group:editors']}
 
-def groupfinder(userid, request):
+def authenticate(name, password):   
     try:
-        user = DBSession.query(User).filter(User.name == userid).first()
+        user = DBSession.query(User).filter(User.name == name).first()
     except DBAPIError:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+        return False
+
+    if not user:
+        return False
     
+    print("*"*20)
+    print(user.passwd+"  "+hashlib.md5(password).hexdigest())
+    print("*"*20)
+
+
+    if user.passwd == hashlib.md5(password).hexdigest():
+        return True
+    return False
+
+def groupfinder(name, request):
+    try:
+        user = DBSession.query(User).filter(User.name == name).first()
+    except DBAPIError:
+        return []   
+ 
     if user:
         return GROUPS.get(user.group, [])
 
