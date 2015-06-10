@@ -20,9 +20,11 @@ class FunctionalTests(unittest.TestCase):
         DBSession.configure(bind=engine)
         Base.metadata.create_all(engine)
         with transaction.manager:
-            user = User(name='user', passwd=hashlib.md5('password').hexdigest(), group='editor')
+            user1 = User(name='user', passwd=hashlib.md5('password').hexdigest(), group='editor')
+            user2 = User(name='admin', passwd=hashlib.md5('Password').hexdigest(), group='admin')
             page = Page(name='sample', data='This is sample', author='user')
-            DBSession.add(user)
+            DBSession.add(user1)
+            DBSession.add(user2)
             DBSession.add(page)
     
         from pyramidlogin import main   
@@ -109,6 +111,80 @@ class FunctionalTests(unittest.TestCase):
         res = self.app.get('/', status=200)
         self.assertTrue( b'Top Page' in res.body)
         self.assertTrue( b'pagename' in res.body)
+
+    def test_signup_01(self):
+        res = self.app.get('/signup',status=200)
+        self.assertTrue( b'Signup' in res.body)
+     
+    def test_signup_02(self):
+        res = self.app.post('/signup',{
+            'form.submitted':'form.submitted',
+            'name':'',
+            'password':'',
+            'repassword':','
+        },status=200)
+        self.assertTrue( b'Signup' in res.body)
+
+    def test_signup_03(self):
+        res = self.app.post('/signup',{
+            'form.submitted':'form.submitted',
+            'name':'hoge',
+            'password':'pass',
+            'repassword':'passwd',
+        },status=200)
+        self.assertTrue( b'Re-password' in res.body)
+
+    def test_signup_04(self):
+        res = self.app.post('/signup',{
+            'form.submitted':'form.submitted',
+            'name':'user',
+            'password':'passwd',
+            'repassword':'passwd',
+        },status=200)
+        self.assertTrue( b'There' in res.body)
+
+    def test_signup_05(self):
+        res = self.app.post('/signup',{
+            'form.submitted':'form.submitted',
+            'name':'',
+            'password':'passwd',
+            'repassword':'passwd',
+        },status=200)
+        self.assertTrue( b'Signup' in res.body)
+
+    def test_signup_06(self):
+        res = self.app.post('/signup',{
+            'form.submitted':'form.submitted',
+            'name':'user2',
+            'password':'passwd',
+            'repassword':'passwd',
+        },status=302)
+
+    def test_signup_07(self):
+        res = self.app.post('/signup',{
+            'form.submitted':'form.submitted',
+            'name':'user2',
+            'password':'passwd',
+            'repassword':'passwd',
+        },status=302)
+
+        res = self.app.get('/',status=200)
+        self.assertTrue( b'user2' in res.body)
+
+
+    def test_admin_01(self):
+        res = self.app.post('/admin',status=200)
+        self.assertTrue( b'Login' in res.body)
+
+    def test_admin_02(self):
+        res = self.app.post('/login' , 
+            {'form.submitted':'form.submitted',
+             'login':'admin',
+             'password':'Password'}, status=302)
+
+        res = self.app.post('/admin', status=200)
+        print(res.body)
+        self.assertTrue( b'Admin' in res.body)
 
 
 

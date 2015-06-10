@@ -8,9 +8,7 @@
     <p><a href="/">Top Page</a> <a href="/logout">logout</a></p>    
     <hr>
     % for user in users:
-        % if user.name != logged_in:
-            ${content(user)}
-        % endif
+        ${content(user)}
     % endfor
     </div>
     

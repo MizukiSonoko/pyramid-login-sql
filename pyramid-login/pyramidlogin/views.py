@@ -107,6 +107,11 @@ def signup(request):
         name = request.params['name']
         password = request.params['password']
         repassword = request.params['repassword']        
+        if not name or not password or not repassword:
+            return dict(
+                name=name,
+                )
+
         if password != repassword:
             return dict(
                 name=name,
@@ -139,6 +144,7 @@ def signup(request):
 def admin_page(request):
     users = allUser()
     message = ''
+   
     if users:
         users = []
         message = 'DB error!'
@@ -154,7 +160,6 @@ def admin_page(request):
         users=users,
         logged_in=authenticated_userid(request),
     )
-
 
 @view_config(route_name='login', renderer='templates/login.mako')
 @forbidden_view_config(renderer='templates/login.mako')
