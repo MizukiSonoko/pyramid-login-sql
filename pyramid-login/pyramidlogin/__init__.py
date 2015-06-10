@@ -27,6 +27,8 @@ def main(global_config, **settings):
     config.add_route('view_top', '/')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+    config.add_route('signup', '/signup')
+    config.add_route('admin', '/admin')
     
     config.add_route('view_page', '/view/{pagename}')
     config.add_route('add_page', '/add_page')

@@ -12,6 +12,7 @@ pyramid_login.egg-info/not-zip-safe
 pyramid_login.egg-info/requires.txt
 pyramid_login.egg-info/top_level.txt
 pyramidlogin/__init__.py
+pyramidlogin/manager.py
 pyramidlogin/models.py
 pyramidlogin/security.py
 pyramidlogin/tests.py
@@ -22,4 +23,11 @@ pyramidlogin/static/pyramid-16x16.png
 pyramidlogin/static/pyramid.png
 pyramidlogin/static/theme.css
 pyramidlogin/static/theme.min.css
-pyramidlogin/templates/mytemplate.pt
+pyramidlogin/templates/add.mako
+pyramidlogin/templates/admin.mako
+pyramidlogin/templates/edit.mako
+pyramidlogin/templates/login.mako
+pyramidlogin/templates/mytemplate.mako
+pyramidlogin/templates/signup.mako
+pyramidlogin/templates/top.mako
+pyramidlogin/templates/view.mako

@@ -7,7 +7,11 @@ from .models import (
 )
 import hashlib
 
-GROUPS = {'editor':['group:editors']}
+GROUPS = {
+    'editor':['group:editors'],
+    'admin':['group:admins'],
+}
+
 
 def authenticate(name, password):   
     try:
@@ -29,7 +33,7 @@ def authenticate(name, password):
 
 def groupfinder(name, request):
     try:
-        user = DBSession.query(User).filter(User.name == name).first()
+        user = DBSession.query(User).filter(User.name == name).one()
     except DBAPIError:
         return []   
  

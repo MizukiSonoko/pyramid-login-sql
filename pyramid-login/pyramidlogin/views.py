@@ -26,15 +26,23 @@ from .models import (
 from .security import ( 
     authenticate,
     )
+from .manager import (
+    allUser,
+    delUser,
+    addUser,
+    exist,
+    )
 
 @view_config(route_name='view_top', renderer='templates/top.mako')
 def view_top(request):
     pages = DBSession.query(Page).all()
+    user  = exist( authenticated_userid(request))
     if 'newpage' in request.params:
         return HTTPFound(location = request.route_url('add_page'))
 
     return dict(
-        pages = pages
+        pages = pages,
+        user = user
     )
 
 
@@ -43,14 +51,15 @@ def view_page(request):
     pagename = request.matchdict['pagename']
     page = DBSession.query(Page).filter_by(name=pagename).first()
     if page is None:
-        return HTTPNotFound('No such page')
+        return HTTPNotFound('No such page.')
 
     edit_url = '/view/' + page.name + '/edit'
 
     return dict(
         page=page,
         edit_url=edit_url,
-        logged_in=authenticated_userid(request))
+        logged_in=authenticated_userid(request)
+    )
 
 @view_config(route_name='add_page', renderer='templates/add.mako',
              permission='edit')
@@ -69,7 +78,8 @@ def add_page(request):
     save_url = request.route_url('add_page', pagename=pagename)
     page = Page('', '', '')
     return dict(page=page, save_url=save_url,
-                logged_in=authenticated_userid(request))
+                logged_in=authenticated_userid(request)
+    )
 
 @view_config(route_name='edit_page', renderer='templates/edit.mako',
              permission='edit')
@@ -87,7 +97,64 @@ def edit_page(request):
         page=page,
         save_url = request.route_url('edit_page', pagename=pagename),
         logged_in=authenticated_userid(request),
-        )
+    )
+
+@view_config(route_name='signup', renderer='templates/signup.mako')
+def signup(request):
+    name = ''
+    password = ''
+    if 'form.submitted' in request.params:
+        name = request.params['name']
+        password = request.params['password']
+        repassword = request.params['repassword']        
+        if password != repassword:
+            return dict(
+                name=name,
+                message='Re-password is different from password!'
+            )
+        if exist(name):
+            return dict(
+                name=name,
+                message='There is already a user named '+name+'.!'
+            )
+
+        if addUser(name, password):
+            headers = remember(request, name)
+            return HTTPFound(location = request.route_url('view_top'),
+                headers = headers)
+        else:
+            return dict(
+                name=name,
+                message='DB Error!'
+            )
+
+    return dict(
+        name=name,
+        message=None
+    )
+
+
+
+@view_config(route_name='admin', renderer='templates/admin.mako', permission='admin')
+def admin_page(request):
+    users = allUser()
+    message = ''
+    if users:
+        users = []
+        message = 'DB error!'
+
+    if 'deluser' in request.params:
+            user = request.params['deluser']
+            if delUser(user):
+                return HTTPFound(location = request.route_url('admin'))
+            else:
+                message = "Deleting user failed." 
+    return dict(
+        message=message,
+        users=users,
+        logged_in=authenticated_userid(request),
+    )
+
 
 @view_config(route_name='login', renderer='templates/login.mako')
 @forbidden_view_config(renderer='templates/login.mako')
@@ -116,7 +183,7 @@ def login(request):
         came_from = came_from,
         login = login,
         password = password,
-        )
+    )
 
 @view_config(route_name='logout')
 def logout(request):
