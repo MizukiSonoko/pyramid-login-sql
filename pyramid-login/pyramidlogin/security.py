@@ -22,10 +22,6 @@ def authenticate(name, password):
     if not user:
         return False
     
-    print("*"*20)
-    print(user.passwd+"  "+hashlib.md5(password).hexdigest())
-    print("*"*20)
-
 
     if user.passwd == hashlib.md5(password).hexdigest():
         return True

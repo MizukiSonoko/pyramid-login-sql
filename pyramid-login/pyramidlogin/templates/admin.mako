@@ -16,7 +16,7 @@
         <div>
             <p>${user.name}</p>
             <form  method="post">
-                <button type="submit" name="deluser" value="">Delete</button>
+                <button type="submit" name="deluser" value="${user.name}">Delete</button>
             </form>
             <hr>
         </div>

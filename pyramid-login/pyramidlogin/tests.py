@@ -26,7 +26,7 @@ class FunctionalTests(unittest.TestCase):
             DBSession.add(user1)
             DBSession.add(user2)
             DBSession.add(page)
-    
+
         from pyramidlogin import main   
         from webtest import TestApp
         a = main({}, **{'sqlalchemy.url': 'sqlite://'})
@@ -173,7 +173,7 @@ class FunctionalTests(unittest.TestCase):
 
 
     def test_admin_01(self):
-        res = self.app.post('/admin',status=200)
+        res = self.app.get('/admin',status=200)
         self.assertTrue( b'Login' in res.body)
 
     def test_admin_02(self):
@@ -182,9 +182,21 @@ class FunctionalTests(unittest.TestCase):
              'login':'admin',
              'password':'Password'}, status=302)
 
-        res = self.app.post('/admin', status=200)
-        print(res.body)
+        res = self.app.get('/admin', status=200)
         self.assertTrue( b'Admin' in res.body)
+        self.assertTrue( b'user' in res.body)
 
+    def test_admin_03(self):
+        res = self.app.post('/login' , 
+            {'form.submitted':'form.submitted',
+             'login':'admin',
+             'password':'Password'}, status=302)
+         
+        res = self.app.post('/admin',
+            {'form.submitted':'form.submitted',
+             'deluser':'user'}, status=302)
+
+        res = self.app.post('/admin', status=200)
+        self.assertTrue( not  b'<p>user</p>' in res.body)
 
 

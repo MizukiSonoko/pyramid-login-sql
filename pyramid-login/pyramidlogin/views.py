@@ -139,15 +139,14 @@ def signup(request):
     )
 
 
-
 @view_config(route_name='admin', renderer='templates/admin.mako', permission='admin')
 def admin_page(request):
     users = allUser()
     message = ''
    
-    if users:
-        users = []
-        message = 'DB error!'
+    #if users:
+    #    users = []
+    #    message = 'DB error!'
 
     if 'deluser' in request.params:
             user = request.params['deluser']
@@ -160,6 +159,8 @@ def admin_page(request):
         users=users,
         logged_in=authenticated_userid(request),
     )
+
+
 
 @view_config(route_name='login', renderer='templates/login.mako')
 @forbidden_view_config(renderer='templates/login.mako')
