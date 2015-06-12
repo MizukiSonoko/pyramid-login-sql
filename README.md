@@ -5,7 +5,7 @@ This Project is the thing which added SQL function to a [tutorial](https://githu
 
 ## Additional function & change
  
- * sinup funcion.
+ * signup funcion.
  * admin function.
  * Using sqlite.
  * Using mako not Chameleon.
