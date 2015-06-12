@@ -185,6 +185,7 @@ class FunctionalTests(unittest.TestCase):
         res = self.app.get('/admin', status=200)
         self.assertTrue( b'Admin' in res.body)
         self.assertTrue( b'user' in res.body)
+        self.assertTrue( not  b'admin' in res.body)
 
     def test_admin_03(self):
         res = self.app.post('/login' , 

@@ -14,11 +14,13 @@
     
     <%def name="content(user)">
         <div>
-            <p>${user.name}</p>
-            <form  method="post">
-                <button type="submit" name="deluser" value="${user.name}">Delete</button>
-            </form>
-            <hr>
+            % if user.group != "admin":
+                <p>${user.name}</p>
+                    <form  method="post">
+                    <button type="submit" name="deluser" value="${user.name}">Delete</button>
+                </form>
+                <hr>
+            % endif
         </div>
     </%def>
     <div>
