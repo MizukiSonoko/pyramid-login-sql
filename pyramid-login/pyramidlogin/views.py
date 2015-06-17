@@ -1,5 +1,4 @@
 import re
-from docutils.core import publish_parts
 
 from pyramid.httpexceptions import (
     HTTPFound,

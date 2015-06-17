@@ -10,11 +10,17 @@ This Project is the thing which added SQL function to a [tutorial](https://githu
  * Admin function.
  * Using sqlite.
  * Using mako not Chameleon.
- 
+
+ * Dockerfile 
+
+## How to use
+
+`
+$ ./docker_build.sh
+`
 
 ## LICENSE
   
   The license is based on LICENSE of Pyramid  basically.
   [LICENSE](https://github.com/pylonsproject-jp/pyramid/blob/doc-ja/LICENSE.txt)
-
 
