@@ -39,6 +39,7 @@ EXPOSE 6543
 
 WORKDIR /pyramid_login
 RUN python setup.py develop
-RUN /usr/local/bin/initialize_pyramid-login_db development.ini
+RUN /usr/local/bin/initialize_pyramid-login_db production.ini
 
+RUN python setup.py test -q
 
