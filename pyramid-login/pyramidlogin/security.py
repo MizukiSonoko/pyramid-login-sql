@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from sqlalchemy.exc import DBAPIError
 
 from .models import (

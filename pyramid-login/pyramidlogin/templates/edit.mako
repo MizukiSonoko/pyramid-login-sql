@@ -5,13 +5,13 @@
 </head>
 <body>
     <h1>${page.name}</h1>
-    <a href="${request.application_url}">TopPage</a>
+    <a href="${domain}">TopPage</a>
     <div>
       <form action="${save_url}" method="post">
         <textarea name="body" rows="10" cols="50">${page.data}</textarea>
         <button type="submit" name="form.submitted" value="Save">Save</button>
       </form>
-      <a href="${request.application_url}/logout">Logout</a>
+      <a href="${domain}/logout">Logout</a>
     </div>
   </div>
   <div id="footer">

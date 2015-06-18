@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import re
 
 from pyramid.httpexceptions import (
@@ -32,14 +33,17 @@ from .manager import (
     exist,
     )
 
+from .domain_info import domain
+
 @view_config(route_name='view_top', renderer='templates/top.mako')
 def view_top(request):
     pages = DBSession.query(Page).all()
     user  = exist( authenticated_userid(request))
     if 'newpage' in request.params:
-        return HTTPFound(location = request.route_url('add_page'))
+        return HTTPFound(location = domain + "/add_page") #request.route_url('add_page'))
 
     return dict(
+        domain = domain,
         pages = pages,
         user = user
     )
@@ -55,6 +59,7 @@ def view_page(request):
     edit_url = '/view/' + page.name + '/edit'
 
     return dict(
+        domain = domain,
         page=page,
         edit_url=edit_url,
         logged_in=authenticated_userid(request)
@@ -71,13 +76,13 @@ def add_page(request):
         author = authenticated_userid(request)
         page = Page(pagename, body, author)
         DBSession.add(page)
-        return HTTPFound(location = request.route_url('view_page',
-            pagename=pagename))
+        return HTTPFound(location = domain +"/view/"+pagename)
 
-    save_url = request.route_url('add_page', pagename=pagename)
+    save_url = domain + '/add_page'# , pagename=pagename)
     page = Page('', '', '')
     return dict(page=page, save_url=save_url,
-                logged_in=authenticated_userid(request)
+                logged_in=authenticated_userid(request),
+                domain = domain,
     )
 
 @view_config(route_name='edit_page', renderer='templates/edit.mako',
@@ -90,11 +95,11 @@ def edit_page(request):
         if page.author == authenticated_userid(request):
             page.data = request.params['body']
             DBSession.add(page)
-            return HTTPFound(location = request.route_url('view_page',
-                pagename=pagename))
+            return HTTPFound(location = domain + "/view/"+ pagename)
     return dict(
+        domain = domain,
         page=page,
-        save_url = request.route_url('edit_page', pagename=pagename),
+        save_url = domain + "/view/" + pagename +"/edit" ,#request.route_url('edit_page', pagename=pagename),
         logged_in=authenticated_userid(request),
     )
 
@@ -124,7 +129,7 @@ def signup(request):
 
         if addUser(name, password):
             headers = remember(request, name)
-            return HTTPFound(location = request.route_url('view_top'),
+            return HTTPFound(location = domain + "/", #request.route_url('view_top'),
                 headers = headers)
         else:
             return dict(
@@ -150,7 +155,7 @@ def admin_page(request):
     if 'deluser' in request.params:
             user = request.params['deluser']
             if delUser(user):
-                return HTTPFound(location = request.route_url('admin'))
+                return HTTPFound(location = domain + "/admin" ) #request.route_url('admin'))
             else:
                 message = "Deleting user failed." 
     return dict(
@@ -168,7 +173,7 @@ def login(request):
     referrer = request.url
     if referrer == login_url:
         referrer = '/' # never use the login form itself as came_from
-    came_from = request.params.get('came_from', referrer)
+    came_from = domain+ referrer
     message = ''
     login = ''
     password = ''
@@ -184,7 +189,7 @@ def login(request):
 
     return dict(
         message = message,
-        url = request.application_url + '/login',
+        url =  domain + '/login', #request.application_url + '/login',
         came_from = came_from,
         login = login,
         password = password,
@@ -193,7 +198,7 @@ def login(request):
 @view_config(route_name='logout')
 def logout(request):
     headers = forget(request)
-    return HTTPFound(location = request.route_url('view_top'),
+    return HTTPFound(location = domain + "/", #request.route_url('view_top'),
                      headers = headers)
 
 

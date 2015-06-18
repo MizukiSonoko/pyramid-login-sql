@@ -38,7 +38,7 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        user = User(name='admin', passwd=hashlib.md5('password').hexdigest(), group='admin')
+        user = User(name='admin', passwd=hashlib.md5("PASS11").hexdigest(), group='admin')
         page = Page('FrontPage', 'This is the front page.', 'one')
         DBSession.add(user)
         DBSession.add(page)

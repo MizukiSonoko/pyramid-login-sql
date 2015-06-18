@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1><b>${page.name}</b></h1>
-    <a href="${request.application_url}">TopPage</a>
+    <a href="${domain}">TopPage</a>
     <hr>
     <p>${page.data}</p>
     <hr>
@@ -16,7 +16,7 @@
     <hr>
     % if logged_in:
         <p>you are ${logged_in}. 
-        <a href="${request.application_url}/logout">Logout</a>
+        <a href="${domain}/logout">Logout</a>
     % endif
     <div id="footer">
         <div class="footer">&copy; Copyright 2015, Sonoko Mizuki.</div>   

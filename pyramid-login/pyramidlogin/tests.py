@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-$
 import unittest
 import transaction
 import hashlib
@@ -5,7 +6,7 @@ import hashlib
 from pyramid import testing
 
 from .models import DBSession
-
+from .domain_info import domain
 
 class FunctionalTests(unittest.TestCase):
     def setUp(self):
@@ -44,7 +45,7 @@ class FunctionalTests(unittest.TestCase):
 
     def test_access_add_page_01(self):
         res = self.app.get('/', {'newpage':'newpage'}, status=302)
-        self.assertEqual(res.location, 'http://localhost/add_page')
+        self.assertEqual(res.location, domain + '/add_page')
     
         res = self.app.get('/add_page', status=200)
         self.assertTrue( b'Login' in res.body)
@@ -84,7 +85,7 @@ class FunctionalTests(unittest.TestCase):
             {'form.submitted':'form.submitted',
              'login':'user',
              'password':'password'}, status=302)
-        self.assertEqual(res.location, 'http://localhost/')
+        self.assertEqual(res.location, domain + "/")
 
     def test_access_add_page_02(self):
         res = self.app.post('/login' , 
@@ -106,7 +107,7 @@ class FunctionalTests(unittest.TestCase):
              'pagename':'pagename',
              'body':'Body'},status=302)
 
-        self.assertEqual(res.location, 'http://localhost/view/pagename')
+        self.assertEqual(res.location, domain +'/view/pagename')
 
         res = self.app.get('/', status=200)
         self.assertTrue( b'Top Page' in res.body)
