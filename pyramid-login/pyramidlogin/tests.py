@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 import transaction
 import hashlib
@@ -104,6 +105,41 @@ class FunctionalTests(unittest.TestCase):
         res = self.app.post('/add_page', 
             {'form.submitted':'form.submitted',
              'pagename':'pagename',
+             'body':u'てすと'},status=302)
+
+        self.assertEqual(res.location, 'http://localhost/view/pagename')
+
+        res = self.app.get('/', status=200)
+        self.assertTrue( b'Top Page' in res.body)
+        self.assertTrue( b'pagename' in res.body)
+
+    def test_add_page_02(self):
+        res = self.app.post('/login' , 
+            {'form.submitted':'form.submitted',
+             'login':'user',
+             'password':'password'}, status=302)
+
+        res = self.app.post('/add_page', 
+            {'form.submitted':'form.submitted',
+             'pagename':'てすと',
+             'body':'Body'},status=302)
+
+        print(res.location)
+        #self.assertEqual(res.location, 'http://localhost/view/')
+
+        res = self.app.get('/', status=200)
+        self.assertTrue( b'Top Page' in res.body)
+        self.assertTrue( b'てすと' in res.body)
+
+    def test_add_page_03(self):
+        res = self.app.post('/login' , 
+            {'form.submitted':'form.submitted',
+             'login':'user',
+             'password':'password'}, status=302)
+
+        res = self.app.post('/add_page', 
+            {'form.submitted':'form.submitted',
+             'pagename':'pagename',
              'body':'Body'},status=302)
 
         self.assertEqual(res.location, 'http://localhost/view/pagename')
@@ -115,6 +151,7 @@ class FunctionalTests(unittest.TestCase):
     def test_signup_01(self):
         res = self.app.get('/signup',status=200)
         self.assertTrue( b'Signup' in res.body)
+     
      
     def test_signup_02(self):
         res = self.app.post('/signup',{
@@ -159,6 +196,7 @@ class FunctionalTests(unittest.TestCase):
             'password':'passwd',
             'repassword':'passwd',
         },status=302)
+
 
     def test_signup_07(self):
         res = self.app.post('/signup',{
