@@ -2,11 +2,14 @@
 <html>
 <head>
     <title>${page.name}</title>
+    <link href="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/css/bootstrap.min.css')}" rel="stylesheet">
+    <link href="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css')}" rel="stylesheet">
 </head>
-<body>
-    <h1><b>${page.name}</b></h1>
-    <a href="${request.application_url}">TopPage</a>
-    <hr>
+<body role="document">
+  <div class="container theme-showcase" role="main"> 
+    <div class="page-header">
+        <h1>${page.name}</h1>
+    </div>   
     <p>${page.data}</p>
     <hr>
     <p> by ${page.author}.</p>
@@ -14,12 +17,18 @@
         <p><a href="${edit_url}">Edit</a>
     % endif
     <hr>
-    % if logged_in:
-        <p>you are ${logged_in}. 
-        <a href="${request.application_url}/logout">Logout</a>
-    % endif
+    <br/>
+    <ul class="nav nav-pills" role="tablist">
+        <li role="presentation" class="active"><a href="${request.application_url}">TopPage</a></li>
+        % if logged_in:
+            <li role="presentation"><a href="${request.application_url}/logout">Logout</a></li>
+        % endif
+    </ul>
+    <br/>
     <div id="footer">
-        <div class="footer">&copy; Copyright 2015, Sonoko Mizuki.</div>   
+        <div class="footer">&copy; Copyright 2015, Sonoko Mizuki.</div>
     </div>
+  </div>
 </body>
 </html>
+

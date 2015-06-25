@@ -19,8 +19,12 @@ This Project is the thing which added SQL function to a [tutorial](https://githu
 $ ./docker_build.sh
 `
 
-## LICENSE
-  
+## LICENSE 
+  Using twitter [bootstrap](https://github.com/twbs/bootstrap)
+  The MIT License (MIT)
+  Copyright (c) 2011-2015 Twitter, Inc
+  [LICENSE](https://github.com/twbs/bootstrap/blob/master/LICENSE)
+
   The license is based on LICENSE of Pyramid  basically.
   [LICENSE](https://github.com/pylonsproject-jp/pyramid/blob/doc-ja/LICENSE.txt)
 
