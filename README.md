@@ -16,7 +16,8 @@ This Project is the thing which added SQL function to a [tutorial](https://githu
 ## How to use
 
 `
-$ ./docker_build.sh
+$ python setup.py develop
+$ pserve production.ini
 `
 
 ## LICENSE
