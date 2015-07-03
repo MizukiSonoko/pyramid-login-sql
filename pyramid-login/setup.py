@@ -18,6 +18,8 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'WebTest',
+    'pysqlite',
+    'sphinx',
     ]
 
 setup(name='pyramid-login',
