@@ -4,14 +4,14 @@
   <title>Add page</title>
 </head>
 <body>
-    <a href="${request.application_url}">TopPage</a>
+    <a href="/">TopPage</a>
     <div>
       <form action="${save_url}" method="post">
         <textarea name="pagename" rows="1" cols="50" placeholder="title" >${page.name}</textarea><br/>
         <textarea name="body" rows="10" cols="50" placeholder="text" >${page.data}</textarea>
         <button type="submit" name="form.submitted" value="Save">Save</button>
       </form>
-      <a href="${request.application_url}/logout">Logout</a>
+      <a href="/logout">Logout</a>
     </div>
   </div>
   <div id="footer">
