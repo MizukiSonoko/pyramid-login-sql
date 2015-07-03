@@ -36,7 +36,7 @@ class Page(Base):
     """ The SQLAlchemy declarative model class for a Page object. """
     __tablename__ = 'pages'
     id = Column(Integer, primary_key=True)
-    name = Column(Text, unique=True)
+    name = Column(Text)
     data = Column(Text)
     author = Column(Text)
 
@@ -53,4 +53,3 @@ class User(Base):
     passwd = Column(Text)
     group  = Column(Text)
 
-Index('user_index', User.name, unique=True, mysql_length=255)
