@@ -3,12 +3,8 @@
 <head>
     <title>Login</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/css/bootstrap.min.css')}" rel="stylesheet">
-
-    <!-- Bootstrap theme -->
-    <link href="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css')}" rel="stylesheet">
-
+    <link href="/static/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -43,14 +39,14 @@
         </form>
         <br/>
         <ul class="nav nav-pills" role="tablist">
-            <li role="presentation" class="active"><a href="${request.application_url}">TopPage</a></li>
+            <li role="presentation" class="active"><a href="/">TopPage</a></li>
         </ul>
         <br/>
         <div id="footer">
             <div class="footer">&copy; Copyright 2015, Sonoko Mizuki.</div>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/js/bootstrap.min.js')}"></script>
+        <script src="/static/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     </div>
 </body>
 </html>

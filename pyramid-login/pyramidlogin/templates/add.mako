@@ -2,8 +2,8 @@
 <html>
 <head>
   <title>Add page</title>
-  <link href="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/css/bootstrap.min.css')}" rel="stylesheet">
-  <link href="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css')}" rel="stylesheet">
+  <link href="/static/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css" rel="stylesheet">
 </head>
 <body role="document">
   <div class="container theme-showcase" role="main"> 
@@ -19,8 +19,8 @@
     </div>
     <br/>
     <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class="active"><a href="${request.application_url}">TopPage</a></li>
-        <li role="presentation"><a href="${request.application_url}/logout">Logout</a></li>
+        <li role="presentation" class="active"><a href="/">TopPage</a></li>
+        <li role="presentation"><a href="/logout">Logout</a></li>
     </ul>
     <br/>
     <div id="footer">

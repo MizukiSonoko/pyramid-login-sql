@@ -2,11 +2,8 @@
 <head>
     <title>Top Page</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/css/bootstrap.min.css')}" rel="stylesheet">
-
-    <!-- Bootstrap theme -->
-    <link href="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css')}" rel="stylesheet">
+    <link href="/static/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css" rel="stylesheet">
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -53,7 +50,7 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="${request.static_url('pyramidlogin:static/bootstrap-3.3.5-dist/js/bootstrap.min.js')}"></script>
+    <script src="/static/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
   </div>
 </body>
 </html>
