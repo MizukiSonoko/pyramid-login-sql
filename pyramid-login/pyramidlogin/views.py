@@ -70,10 +70,11 @@ def add_page(request):
         pagename = request.params['pagename']
         body = request.params['body']
         author = authenticated_userid(request)
-        page = Page(pagename, body, author)
-        DBSession.add(page)
-        return HTTPFound(location = request.route_url('view_page',
-            pagename=pagename))
+        if pagename != "" or body != "":
+            page = Page(pagename, body, author)
+            DBSession.add(page)
+            return HTTPFound(location = request.route_url('view_page',
+                pagename=pagename))
 
     save_url = request.route_url('add_page', pagename=pagename)
     page = Page('', '', '')
